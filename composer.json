@@ -1,0 +1,28 @@
+{
+  "name": "selline-soft/container",
+  "description": "PSR-11 dependency injection implementation",
+  "authors": [
+    {
+      "name": "Alexey Volkov",
+      "email": "webwizardry@hotmail.com"
+    }
+  ],
+  "license": "BSD-3-Clause",
+  "autoload": {
+    "psr-4": {
+      "Selline\\Di\\": "src"
+    }
+  },
+  "require": {
+    "psr/container": "dev-master"
+  },
+  "require-dev": {
+    "vimeo/psalm": "^4.6",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Selline\\Di\\Tests\\": "tests"
+    }
+  }
+}
