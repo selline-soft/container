@@ -105,6 +105,15 @@ class Container implements ContainerInterface
             unset($this->instances[$id]);
             unset($this->locks[$id]);
 
+
+            if (
+                is_array($definition)
+                && !isset($definition[ServiceDefinitionInterface::CLASS_ARRAY_KEY])
+                && class_exists($id)
+            ) {
+                $definition[ServiceDefinitionInterface::CLASS_ARRAY_KEY] = $id;
+            }
+
             $this->definitions[$id] = $this->definitionFactory->create($definition);
         }
     }
