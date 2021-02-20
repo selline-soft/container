@@ -12,4 +12,11 @@ return [
         '__class' => \Selline\Di\Tests\Data\Classes\Big::class,
         'name' => 'test name',
     ],
+
+    'some_named_service' => [
+        '__class' => function(\Psr\Container\ContainerInterface $container, \Selline\Di\Tests\Data\Classes\Big $big, $name) {
+            return new \Selline\Di\Tests\Data\Closured($big, $name);
+        },
+        'name' => 'closure id'
+    ]
 ];

@@ -3,13 +3,21 @@ namespace Selline\Di\Definitions;
 use ReflectionException;
 use ReflectionMethod;
 use Selline\Di\Exceptions\ContainerException;
+use ReflectionFunction;
 
 final class ClosureDefinition extends AbstractServiceDefinition
 {
-    protected function createReflection(): ReflectionMethod
+    public function __construct(array $definition)
+    {
+        $this->className = $definition[self::CLASS_ARRAY_KEY];
+        unset($definition[self::CLASS_ARRAY_KEY]);
+        $this->arguments = $definition;
+    }
+
+    protected function createReflection(): ReflectionFunction
     {
         try {
-            return new ReflectionMethod($this->getClass());
+            return new ReflectionFunction($this->getClass());
         } catch (ReflectionException $exception) {
             throw new ContainerException($exception->getMessage());
         }
@@ -17,6 +25,7 @@ final class ClosureDefinition extends AbstractServiceDefinition
 
     public function invoke(array $parameters): object
     {
-        // TODO: Implement invoke() method.
+        $closure = $this->getClass();
+        return $closure(...$parameters);
     }
 }

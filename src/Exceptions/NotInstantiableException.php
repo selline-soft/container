@@ -2,7 +2,7 @@
 namespace Selline\Di\Exceptions;
 use Throwable;
 
-class NotInstantiableException extends ContainerException
+class NotInstantiableException extends ServiceNotFoundException
 {
     /**
      * Конструктор.

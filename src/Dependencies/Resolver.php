@@ -25,7 +25,8 @@ class Resolver implements ResolverInterface
 
                     $dependency = $argument->getType();
 
-                    if (is_null($dependency)) {
+
+                    if (is_null($dependency) || !$container->has($dependency)) {
                         if ($argument->isDefaultValueAvailable()) {
                             $arguments[$index] = $argument->getDefaultValue();
                         } else {

@@ -6,7 +6,9 @@ class Big
     public function __construct(
         private BarInterface $bar,
         private Foo $foo,
-        private string $name
+        private string $name,
+        private string $def = 'default'
+
     ){}
 
 

@@ -76,7 +76,7 @@ abstract class AbstractServiceDefinition implements ServiceDefinitionInterface
      * @throws ContainerException
      * @return ReflectionMethod|null
      */
-    abstract protected function createReflection(): ReflectionMethod|null;
+    abstract protected function createReflection(): ReflectionMethod|\ReflectionFunction|null;
 
     abstract public function invoke(array $parameters): object;
 }

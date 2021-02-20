@@ -5,8 +5,10 @@ use Selline\Di\Container;
 use Selline\Di\Definitions\DefinitionFactory;
 use Selline\Di\Dependencies\Resolver;
 use Selline\Di\Exceptions\MissedIdentifierException;
+use Selline\Di\Exceptions\ServiceNotFoundException;
 use Selline\Di\Tests\Data\Classes\BarInterface;
 use Selline\Di\Tests\Data\Classes\Sta;
+use Selline\Di\Tests\Data\Classes\UnimplementedInterface;
 
 class ContainerTest extends TestCase
 {
@@ -24,6 +26,12 @@ class ContainerTest extends TestCase
     public function tearDown(): void
     {
         unset($this->di);
+    }
+
+    public function testServiceNotFound()
+    {
+        $this->expectException(ServiceNotFoundException::class);
+        $this->di->get(UnimplementedInterface::class);
     }
 
     public function testBar()

@@ -5,6 +5,7 @@ use Selline\Di\Definitions\DefinitionFactoryInterface;
 use Selline\Di\Definitions\ServiceDefinitionInterface;
 use Selline\Di\Dependencies\ResolverInterface;
 use Selline\Di\Exceptions\CircularReferenceException;
+use Selline\Di\Exceptions\ServiceNotFoundException;
 
 /**
  * Контейнер внедрения зависимостей
@@ -38,7 +39,9 @@ class Container implements ContainerInterface
     public function __construct(
         private DefinitionFactoryInterface $definitionFactory,
         private ResolverInterface $resolver
-    ){}
+    ){
+        $this->set(ContainerInterface::class, $this);
+    }
 
     /**
      * Создает и возвращает объект сервиса по идентификатору.
@@ -62,6 +65,7 @@ class Container implements ContainerInterface
 
             $this->instances[$id] = $this->resolver->resolve($this, $this->definitions[$id]);
         }
+
         return $this->instances[$id];
     }
 
@@ -94,10 +98,15 @@ class Container implements ContainerInterface
             $definition = $id;
         }
 
-        unset($this->instances[$id]);
-        unset($this->locks[$id]);
+        if (is_object($definition)) {
+            $this->instances[$id] = $definition;
+            $this->definitions[$id] = $id;
+        } else {
+            unset($this->instances[$id]);
+            unset($this->locks[$id]);
 
-        $this->definitions[$id] = $this->definitionFactory->create($definition);
+            $this->definitions[$id] = $this->definitionFactory->create($definition);
+        }
     }
 
     public function setMultiple(array $config)
