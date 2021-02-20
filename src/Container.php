@@ -50,6 +50,10 @@ class Container implements ContainerInterface
      */
     public function get(string $id): object
     {
+        if (!array_key_exists($id, $this->definitions)) {
+            $this->set($id);
+        }
+
         if (!isset($this->instances[$id])) {
             if ($this->isLocked($id)) {
                 throw new CircularReferenceException($id);
@@ -84,8 +88,12 @@ class Container implements ContainerInterface
      * @param string $id идентификатор сервиса
      * @param mixed $definition определение сервиса
      */
-    public function set(string $id, mixed $definition): void
+    public function set(string $id, mixed $definition = null): void
     {
+        if (is_null($definition)) {
+            $definition = $id;
+        }
+
         unset($this->instances[$id]);
         unset($this->locks[$id]);
 

@@ -4,7 +4,8 @@ namespace Selline\Di\Definitions;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use Selline\Di\Exceptions\ContainerException;
+use Selline\Di\Exceptions\ClassNotFoundException;
+use Selline\Di\Exceptions\NotInstantiableException;
 
 final class ArrayDefinition extends AbstractServiceDefinition
 {
@@ -15,17 +16,22 @@ final class ArrayDefinition extends AbstractServiceDefinition
         $this->arguments = $definition;
     }
 
+    /**
+     * @return ReflectionMethod|null
+     * @throws ClassNotFoundException
+     * @throws NotInstantiableException
+     */
     protected function createReflection(): ReflectionMethod|null
     {
         try {
             $reflection = new ReflectionClass($this->getClass());
             if (!$reflection->isInstantiable()) {
-                throw new ContainerException("Service is not instantiable");
+                throw new NotInstantiableException($this->getClass());
             }
             return $reflection->getConstructor();
 
         } catch (ReflectionException $exception) {
-            throw new ContainerException($exception->getMessage());
+            throw new ClassNotFoundException($exception->getMessage());
         }
     }
 

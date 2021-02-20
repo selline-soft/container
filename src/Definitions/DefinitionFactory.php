@@ -31,7 +31,6 @@ final class DefinitionFactory implements DefinitionFactoryInterface
     /**
      * @param mixed $definition
      * @throws MissedIdentifierException
-     * @throws ClassNotFoundException
      */
     private function normalizeDefinition(mixed &$definition)
     {
@@ -41,10 +40,6 @@ final class DefinitionFactory implements DefinitionFactoryInterface
 
         $identifier = $definition[ServiceDefinitionInterface::CLASS_ARRAY_KEY]
             ?? throw new MissedIdentifierException();
-
-        if (!$identifier instanceof Closure && !class_exists($identifier)) {
-            throw new ClassNotFoundException($identifier);
-        }
     }
 }
 

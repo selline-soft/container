@@ -4,7 +4,9 @@ use PHPUnit\Framework\TestCase;
 use Selline\Di\Container;
 use Selline\Di\Definitions\DefinitionFactory;
 use Selline\Di\Dependencies\Resolver;
+use Selline\Di\Exceptions\MissedIdentifierException;
 use Selline\Di\Tests\Data\Classes\BarInterface;
+use Selline\Di\Tests\Data\Classes\Sta;
 
 class ContainerTest extends TestCase
 {
@@ -28,5 +30,24 @@ class ContainerTest extends TestCase
     {
         $bar = $this->di->get(BarInterface::class);
         $this->assertInstanceOf(BarInterface::class, $bar);
+    }
+
+    public function testNotInstantiableException()
+    {
+        $this->expectExceptionMessage("Class is not instantiable");
+        $this->di->get(Sta::class);
+    }
+
+    public function testReflectionException()
+    {
+        $this->expectExceptionMessage("Class not found");
+        $this->di->get('UnexistingClassName');
+    }
+
+    public function testMissedIdentifierException()
+    {
+        $this->expectException(MissedIdentifierException::class);
+        $this->di->set('test', ['foo' => 'bar']);
+        $this->di->get('test');
     }
 }

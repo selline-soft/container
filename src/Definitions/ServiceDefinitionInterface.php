@@ -18,6 +18,7 @@ interface ServiceDefinitionInterface
      * Возвращает имя класса или замыкание, создающее экземпляр класса.
      *
      * @return string|Closure
+     * @psalm-return class-string|Closure
      */
     public function getClass(): string|Closure;
 
